@@ -1,4 +1,4 @@
-import express from "expressgit init";
+import express from "express";
 const app = express();
 const port = 3000;
 
