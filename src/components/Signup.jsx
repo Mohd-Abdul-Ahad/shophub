@@ -11,7 +11,36 @@ const Signup = () => {
     mode: "onChange", // Validate on change
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) =>{
+    try {
+        // Send data to your backend
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+            name: data.name
+          }),
+        });
+    
+        const result = await response.json();
+        
+        if (response.ok) {
+          // Handle successful signup (save token, redirect, etc.)
+          localStorage.setItem('authToken', result.token);
+          window.location.href = '/dashboard';
+        } else {
+          // Handle errors from backend
+          alert(result.message || 'Signup failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during signup');
+      }
+    };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
